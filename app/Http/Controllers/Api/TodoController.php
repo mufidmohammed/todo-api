@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\StoreTodoRequest;
+use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TodoController extends Controller
@@ -20,18 +21,19 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTodoRequest $request)
     {
-        $todo = Todo::create($request->only(['task']));
+        $todo = Todo::create($request->validated());
         return response()->json($todo, 201);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Todo $todo)
+    public function update(UpdateTodoRequest $request, Todo $todo)
     {
-        $todo->update($request->only(['task', 'completed']));
+
+        $todo->update($request->validated());
         return response()->json($todo);
     }
 
